@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// 用户表
+model User {
+  user_id  Int       @id @default(autoincrement())
+  username String    @unique
+  password String
+  profile  Profile?
+  posts    Post[]
+  comments Comment[]
+}
+
+// 用户个人资料表
+model Profile {
+  profile_id Int     @id @default(autoincrement())
+  user_id    Int     @unique
+  avatar     Int?
+  nickname   String?
+  gender     String?
+  mail       String?
+  user       User    @relation(fields: [user_id], references: [user_id])
+}
+
+// 帖子表
+model Post {
+  post_id  Int       @id @default(autoincrement())
+  user_id  Int
+  title    String
+  image    String?
+  content  String
+  created  DateTime  @default(now())
+  user     User      @relation(fields: [user_id], references: [user_id])
+  comments Comment[]
+}
+
+// 评论表
+model Comment {
+  comment_id Int      @id @default(autoincrement())
+  user_id    Int
+  post_id    Int
+  content    String
+  created    DateTime @default(now())
+  user       User     @relation(fields: [user_id], references: [user_id])
+  post       Post     @relation(fields: [post_id], references: [post_id])
+}
