@@ -9,7 +9,7 @@ import { AuthService } from './auth/auth.service';
 import { JWTModule } from './jwt/jwt.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { CspMiddleware } from './middleware/csp.middleware';
+
 
 @Module({
   imports: [
@@ -17,7 +17,6 @@ import { CspMiddleware } from './middleware/csp.middleware';
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads', // 设置对外访问的根路径
     }),
-    CspMiddleware.apply(CspMiddleware).forRoutes('*'),
     UserModule,
     AuthModule,
     ProfileModule,
