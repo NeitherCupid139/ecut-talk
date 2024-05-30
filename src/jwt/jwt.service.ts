@@ -6,10 +6,12 @@ import { get } from 'http';
 export class JWTService {
   constructor(private jwtService: JwtService) {}
 
+  // 生成token
   generateToken(payload: any) {
     return this.jwtService.sign(payload);
   }
 
+  // 验证token
   verifyToken(token: string): {
     username: string;
     sub: number;

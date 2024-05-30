@@ -97,8 +97,32 @@ export class PostService {
     };
   }
 
-  // 修改帖子
-  async updatePost(
+  // 修改帖子不带图片
+  async updatePost(id: number, postId: number, postDto: PostDto) {
+    const post = await this.prismaService.post.findUnique({
+      where: {
+        post_id: postId,
+        user_id: id,
+      },
+    });
+    if (!post) throw new BadRequestException('帖子不存在');
+    await this.prismaService.post.update({
+      where: {
+        post_id: postId,
+      },
+      data: {
+        title: postDto.title,
+        content: postDto.content,
+      },
+    });
+    return {
+      statusCode: HttpStatus.OK,
+      message: '帖子修改成功',
+    };
+  }
+
+  // 修改帖子带图片
+  async updatePostWithImage(
     id: number,
     postId: number,
     file: Express.Multer.File,

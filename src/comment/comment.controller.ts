@@ -34,7 +34,7 @@ export class CommentController {
     return this.commentService.createComment(+postId, id, commentDto);
   }
 
-  // 根据文章id查找评论
+  // 根据帖子id查找评论
   @Get('/:postId')
   findCommentsByPostId(@Param('postId') postId: number) {
     return this.commentService.findCommentsByPostId(+postId);

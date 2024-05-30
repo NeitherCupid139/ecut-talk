@@ -29,14 +29,14 @@ export class PostController {
     private readonly jwtService: JWTService,
   ) {}
 
-  // 获取所有文章
+  // 获取所有帖子
   @Get()
   @UseGuards(AuthGuard)
   getAllPosts(@Query('page') page: number) {
     return this.postService.getAllPosts(page);
   }
 
-  // 根据用户id获取文章
+  // 根据用户id获取帖子
   @Get('/user')
   @UseGuards(AuthGuard)
   getAllPostsByUserId(@Req() req: Request) {
@@ -45,7 +45,7 @@ export class PostController {
     return this.postService.getAllPostsByUserId(id);
   }
 
-  // 根据文章id获取文章;
+  // 根据帖子id获取帖子;
   @Get('id/:id')
   getPostById(@Param('id') id: number) {
     return this.postService.getPostById(+id);
@@ -68,11 +68,25 @@ export class PostController {
     const id = this.jwtService.verifyToken(token).sub;
     return this.postService.createPost(id, file, postDto);
   }
-  //修改文章
+
+  // 修改帖子
   @Put(':postId')
   @HttpCode(HttpStatus.OK)
-  @UseInterceptors(FileInterceptor('file'))
   updatePost(
+    @Param('postId') postId: number,
+    @Req() req: Request,
+    @Body() postDto: PostDto,
+  ) {
+    const token = req.headers['authorization'];
+    const id = this.jwtService.verifyToken(token).sub;
+    return this.postService.updatePost(id, +postId, postDto);
+  }
+
+  //修改帖子带图片
+  @Put('/image/:postId')
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileInterceptor('file'))
+  updatePostWithImage(
     @Param('postId') postId: number,
     @Req() req: Request,
     @UploadedFile() file: Express.Multer.File,
@@ -84,17 +98,17 @@ export class PostController {
     }
     const token = req.headers['authorization'];
     const id = this.jwtService.verifyToken(token).sub;
-    return this.postService.updatePost(id, +postId, file, postDto);
+    return this.postService.updatePostWithImage(id, +postId, file, postDto);
   }
 
-  // 删除文章
+  // 删除帖子
   @Delete(':postId')
   deletePost(@Param('postId') postId: number, @Req() req: Request) {
     const token = req.headers['authorization'];
     const id = this.jwtService.verifyToken(token).sub;
     return this.postService.deletePost(id, +postId);
   }
-  // 根据关键字搜索文章
+  // 根据关键字搜索帖子
   @Get('/search')
   getPostsBykeyword(@Query('keyword') keyword: string) {
     return this.postService.getPostByKeyword(keyword);

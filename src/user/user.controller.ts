@@ -8,6 +8,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  // 注册用户
   @Post('/register')
   createUser(@Body() data: { userDto: UserDto; profileDto: ProfileDto }) {
     const { userDto, profileDto } = data;

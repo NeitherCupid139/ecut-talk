@@ -32,7 +32,7 @@ export class CommentService {
     };
   }
 
-  // 根据文章id查找评论
+  // 根据帖子id查找评论
   async findCommentsByPostId(id: number) {
     return this.prismaService.comment.findMany({
       where: {

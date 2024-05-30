@@ -12,6 +12,7 @@ export class AuthService {
     private jwtService: JWTService,
   ) {}
 
+  //登录
   async login(userDto: UserDto): Promise<{
     token: string;
     statusCode: number;
@@ -31,10 +32,11 @@ export class AuthService {
     };
   }
 
+  //验证jwt
   async validateUser(token: string): Promise<any> {
     try {
       const decoded = jwt.verify(token, 'ecut');
-      console.log(decoded);
+
       return {
         statusCode: HttpStatus.OK,
         message: '验证成功',

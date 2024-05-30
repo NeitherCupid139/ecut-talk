@@ -22,6 +22,7 @@ export class ProfileController {
     private readonly jwtService: JWTService,
   ) {}
 
+  // 根据用户id获取用户个人资料
   @Get()
   @UseGuards(AuthGuard)
   getProfile(@Req() req: Request) {

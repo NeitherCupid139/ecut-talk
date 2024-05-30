@@ -7,6 +7,7 @@ import { JWTService } from '../jwt/jwt.service';
 export class AuthGuard implements CanActivate {
   constructor(private jwtService: JWTService) {}
 
+  //验证token
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
